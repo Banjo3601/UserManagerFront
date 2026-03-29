@@ -1,4 +1,5 @@
 <div class="page">
+
   <header class="hero">
     <div>
       <h1>Gestion des utilisateurs</h1>
@@ -6,51 +7,18 @@
     </div>
   </header>
 
-  <section class="panel form-panel">
-    <div class="panel-header">
-      <h2>{{ isEditing ? 'Modifier un utilisateur' : 'Créer un utilisateur' }}</h2>
-    </div>
+  <!-- FORMULAIRE -->
+  <app-user-form
+    [user]="selectedUser"
+    [isEditing]="isEditing"
+    (save)="onSave($event)"
+    (cancel)="cancelEdit()">
+  </app-user-form>
 
-    <form class="user-form" (ngSubmit)="submitForm()">
-      <div class="form-grid">
-        <div class="field">
-          <label>Prénom</label>
-          <input [(ngModel)]="formUser.firstName" name="firstName" required />
-        </div>
 
-        <div class="field">
-          <label>Nom</label>
-          <input [(ngModel)]="formUser.lastName" name="lastName" required />
-        </div>
-
-        <div class="field">
-          <label>Email</label>
-          <input [(ngModel)]="formUser.email" name="email" type="email" required />
-        </div>
-
-        <div class="field">
-          <label>Mot de passe</label>
-          <input [(ngModel)]="formUser.password" name="password" type="text" required />
-        </div>
-      </div>
-
-      <div class="form-actions">
-        <button type="submit" class="btn primary">
-          {{ isEditing ? 'Enregistrer' : 'Créer' }}
-        </button>
-
-        <button
-          *ngIf="isEditing"
-          type="button"
-          class="btn secondary"
-          (click)="cancelEdit()">
-          Annuler
-        </button>
-      </div>
-    </form>
-  </section>
-
+  <!-- LISTE + RECHERCHE -->
   <section class="panel">
+
     <div class="toolbar">
       <div class="search-box">
         <input
@@ -61,45 +29,45 @@
           (input)="onSearch()" />
       </div>
 
-      <button class="btn secondary" (click)="clearSearch()">Réinitialiser</button>
+      <button class="btn secondary" (click)="clearSearch()">
+        Réinitialiser
+      </button>
     </div>
+
 
     <div class="results-header">
       <h2>Liste des utilisateurs</h2>
       <span>{{ totalCount }} résultat(s)</span>
     </div>
 
-    <div class="user-grid" *ngIf="users.length > 0; else emptyState">
-      <article class="user-card" *ngFor="let user of users">
-        <div class="user-card-body">
-          <h3>{{ user.firstName }} {{ user.lastName }}</h3>
-          <p class="email">{{ user.email }}</p>
-          <p class="meta">ID : {{ user.id }}</p>
-        </div>
 
-        <div class="card-actions">
-          <button class="btn small secondary" (click)="editUser(user)">Modifier</button>
-          <button class="btn small danger" (click)="deleteUser(user.id)">Supprimer</button>
-        </div>
-      </article>
-    </div>
+    <!-- LISTE -->
+    <app-user-list
+      [users]="users"
+      (edit)="editUser($event)"
+      (delete)="deleteUser($event)">
+    </app-user-list>
 
-    <ng-template #emptyState>
-      <div class="empty-state">
-        <p>Aucun utilisateur trouvé.</p>
-      </div>
-    </ng-template>
 
+    <!-- PAGINATION -->
     <div class="pagination">
-      <button class="btn secondary" (click)="previousPage()" [disabled]="currentPage === 1">
+      <button
+        class="btn secondary"
+        (click)="previousPage()"
+        [disabled]="currentPage === 1">
         Précédent
       </button>
 
       <span>Page {{ currentPage }} / {{ totalPages }}</span>
 
-      <button class="btn secondary" (click)="nextPage()" [disabled]="currentPage === totalPages">
+      <button
+        class="btn secondary"
+        (click)="nextPage()"
+        [disabled]="currentPage === totalPages">
         Suivant
       </button>
     </div>
+
   </section>
+
 </div>
