@@ -1,0 +1,20 @@
+<div class="user-grid" *ngIf="users.length > 0; else emptyState">
+  <article class="user-card" *ngFor="let user of users">
+    <div class="user-card-body">
+      <h3>{{ user.firstName }} {{ user.lastName }}</h3>
+      <p class="email">{{ user.email }}</p>
+      <p class="meta">ID : {{ user.id }}</p>
+    </div>
+
+    <div class="card-actions">
+      <button class="btn small secondary" (click)="onEdit(user)">Modifier</button>
+      <button class="btn small danger" (click)="onDelete(user.id)">Supprimer</button>
+    </div>
+  </article>
+</div>
+
+<ng-template #emptyState>
+  <div class="empty-state">
+    <p>Aucun utilisateur trouvé.</p>
+  </div>
+</ng-template>
