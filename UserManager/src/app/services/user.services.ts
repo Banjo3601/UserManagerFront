@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { User } from '../models/user.model';
+import { PagedResult } from '../models/paged-result.model';
 
 
 @Injectable({
@@ -21,19 +22,9 @@ export class UserService {
   }
 
   // 🔹 GET search + pagination
-  searchUsers(search: string, page: number, pageSize: number): Observable<{
-    totalCount: number;
-    page: number;
-    pageSize: number;
-    data: User[];
-  }> {
-    return this.http.get<{
-      totalCount: number;
-      page: number;
-      pageSize: number;
-      data: User[];
-    }>(
-      `${this.apiUrl}/search?search=${search}&page=${page}&pageSize=${pageSize}`
+  searchUsers(search: string, page: number, pageSize: number): Observable<PagedResult<User>> {
+    return this.http.get<PagedResult<User>>(
+      `${this.apiUrl}/search?search=${encodeURIComponent(search)}&page=${page}&pageSize=${pageSize}`
     );
   }
 
@@ -50,5 +41,9 @@ export class UserService {
   // 🔹 DELETE
   deleteUser(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  getUserById(id: number): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
 }
