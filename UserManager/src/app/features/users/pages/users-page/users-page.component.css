@@ -107,6 +107,15 @@
   cursor: not-allowed;
 }
 
+.success-banner {
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: #dcfce7;
+  color: #166534;
+  font-weight: 600;
+}
+
 @media (max-width: 640px) {
   .toolbar,
   .results-header {

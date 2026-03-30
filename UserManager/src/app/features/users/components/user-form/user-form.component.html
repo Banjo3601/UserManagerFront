@@ -6,7 +6,7 @@
     </p>
   </div>
 
-  <form class="user-form" #form="ngForm" (ngSubmit)="submitForm()">
+  <form class="user-form" #form="ngForm" (ngSubmit)="submitForm()" novalidate>
     <div class="form-grid">
       <div class="field">
         <label for="firstName">Prénom</label>
@@ -20,7 +20,7 @@
           [class.invalid]="firstName.invalid && firstName.touched"
           placeholder="Ex. Jean"
         />
-        <small class="error" *ngIf="firstName.errors?.['required'] && firstName.touched">
+        <small class="error" *ngIf="firstName.errors?.['required'] && (firstName.touched || form.submitted)">
           Le prénom est obligatoire
         </small>
         <small class="error" *ngIf="firstName.errors?.['minlength'] && firstName.touched">
@@ -40,7 +40,7 @@
           [class.invalid]="lastName.invalid && lastName.touched"
           placeholder="Ex. Dupont"
         />
-        <small class="error" *ngIf="lastName.errors?.['required'] && lastName.touched">
+        <small class="error" *ngIf="lastName.errors?.['required'] && (lastName.touched || form.submitted)">
           Le nom est obligatoire
         </small>
         <small class="error" *ngIf="lastName.errors?.['minlength'] && lastName.touched">
@@ -62,28 +62,37 @@
           [class.invalid]="email.invalid && email.touched"
           placeholder="Ex. JeanDupont@email.com"
         />
-        <small class="error" *ngIf="email.errors?.['required'] && email.touched">
+        <small class="error" *ngIf="email.errors?.['required'] && (email.touched || form.submitted)">
           L’email est obligatoire
         </small>
-        <small class="error" *ngIf="email.errors?.['email'] && email.touched">
+        <small class="error" *ngIf="email.errors?.['email'] && (email.touched || form.submitted)">
           Format d’email invalide
         </small>
       </div>
 
       <div class="field">
         <label for="password">Mot de passe</label>
-        <input
-          id="password"
-          [(ngModel)]="formUser.password"
-          name="password"
-          type="text"
-          required
-          minlength="4"
-          #password="ngModel"
-          [class.invalid]="password.invalid && password.touched"
-          placeholder="Minimum 4 caractères"
-        />
-        <small class="error" *ngIf="password.errors?.['required'] && password.touched">
+        <div class="password-wrapper">
+          <input
+            id="password"
+            [(ngModel)]="formUser.password"
+            name="password"
+            [type]="showPassword ? 'text' : 'password'"
+            required
+            minlength="4"
+            #password="ngModel"
+            [class.invalid]="password.invalid && password.touched"
+            placeholder="Minimum 4 caractères"
+          />
+
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="showPassword = !showPassword">
+            {{ showPassword ? 'Masquer' : 'Afficher' }}
+          </button>
+        </div>
+        <small class="error" *ngIf="password.errors?.['required'] && (password.touched || form.submitted)">
           Le mot de passe est obligatoire
         </small>
         <small class="error" *ngIf="password.errors?.['minlength'] && password.touched">

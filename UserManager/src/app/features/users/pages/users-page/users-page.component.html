@@ -6,6 +6,10 @@
     </div>
   </header>
 
+  <div class="success-banner" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
   <app-user-form
     [user]="selectedUser"
     [isEditing]="isEditing"

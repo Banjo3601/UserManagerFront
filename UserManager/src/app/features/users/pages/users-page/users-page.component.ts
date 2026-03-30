@@ -24,6 +24,7 @@ export class UsersPageComponent implements OnInit {
   pageSize = 6;
   totalCount = 0;
   formResetTrigger = 0;
+  successMessage = '';
 
   constructor(
     private userService: UserService,
@@ -81,12 +82,14 @@ export class UsersPageComponent implements OnInit {
 
       this.userService.updateUser(user).subscribe({
         next: () => {
+          this.successMessage = 'Utilisateur modifié avec succès.';
           this.cancelEdit();
           this.formResetTrigger++;
           this.loadUsers();
+          setTimeout(() => this.successMessage = '', 3000);
         },
         error: (err) => console.error(err)
-    });
+      });
     return;
   }
   
@@ -96,8 +99,10 @@ export class UsersPageComponent implements OnInit {
   
   this.userService.createUser(user).subscribe({
     next: () => {
+      this.successMessage = 'Utilisateur créé avec succès.';
       this.formResetTrigger++;
       this.loadUsers();
+      setTimeout(() => this.successMessage = '', 3000);
     },
     error: (err) => console.error(err)
   });
