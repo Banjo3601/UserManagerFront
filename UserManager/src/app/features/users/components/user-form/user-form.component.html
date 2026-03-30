@@ -1,33 +1,99 @@
-<section class="panel">
+<section class="panel form-panel">
   <div class="panel-header">
     <h2>{{ isEditing ? 'Modifier un utilisateur' : 'Créer un utilisateur' }}</h2>
+    <p class="panel-subtitle">
+      Renseigne tous les champs pour {{ isEditing ? 'mettre à jour' : 'ajouter' }} un utilisateur.
+    </p>
   </div>
 
-  <form class="user-form" (ngSubmit)="submitForm()">
+  <form class="user-form" #form="ngForm" (ngSubmit)="submitForm()">
     <div class="form-grid">
       <div class="field">
-        <label>Prénom</label>
-        <input [(ngModel)]="formUser.firstName" name="firstName" required />
+        <label for="firstName">Prénom</label>
+        <input
+          id="firstName"
+          [(ngModel)]="formUser.firstName"
+          name="firstName"
+          required
+          minlength="2"
+          #firstName="ngModel"
+          [class.invalid]="firstName.invalid && firstName.touched"
+          placeholder="Ex. Jean"
+        />
+        <small class="error" *ngIf="firstName.errors?.['required'] && firstName.touched">
+          Le prénom est obligatoire
+        </small>
+        <small class="error" *ngIf="firstName.errors?.['minlength'] && firstName.touched">
+          Minimum 2 caractères
+        </small>
       </div>
 
       <div class="field">
-        <label>Nom</label>
-        <input [(ngModel)]="formUser.lastName" name="lastName" required />
+        <label for="lastName">Nom</label>
+        <input
+          id="lastName"
+          [(ngModel)]="formUser.lastName"
+          name="lastName"
+          required
+          minlength="2"
+          #lastName="ngModel"
+          [class.invalid]="lastName.invalid && lastName.touched"
+          placeholder="Ex. Dupont"
+        />
+        <small class="error" *ngIf="lastName.errors?.['required'] && lastName.touched">
+          Le nom est obligatoire
+        </small>
+        <small class="error" *ngIf="lastName.errors?.['minlength'] && lastName.touched">
+          Minimum 2 caractères
+        </small>
       </div>
 
       <div class="field">
-        <label>Email</label>
-        <input [(ngModel)]="formUser.email" name="email" type="email" required />
+        <label for="email">Email</label>
+        <input
+          id="email"
+          [(ngModel)]="formUser.email"
+          name="email"
+          type="email"
+          required
+          email
+          pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
+          #email="ngModel"
+          [class.invalid]="email.invalid && email.touched"
+          placeholder="Ex. JeanDupont@email.com"
+        />
+        <small class="error" *ngIf="email.errors?.['required'] && email.touched">
+          L’email est obligatoire
+        </small>
+        <small class="error" *ngIf="email.errors?.['email'] && email.touched">
+          Format d’email invalide
+        </small>
       </div>
 
       <div class="field">
-        <label>Mot de passe</label>
-        <input [(ngModel)]="formUser.password" name="password" type="text" required />
+        <label for="password">Mot de passe</label>
+        <input
+          id="password"
+          [(ngModel)]="formUser.password"
+          name="password"
+          type="text"
+          required
+          minlength="4"
+          #password="ngModel"
+          [class.invalid]="password.invalid && password.touched"
+          placeholder="Minimum 4 caractères"
+        />
+        <small class="error" *ngIf="password.errors?.['required'] && password.touched">
+          Le mot de passe est obligatoire
+        </small>
+        <small class="error" *ngIf="password.errors?.['minlength'] && password.touched">
+          Minimum 4 caractères
+        </small>
       </div>
     </div>
 
     <div class="form-actions">
-      <button type="submit" class="btn primary">
+      <button type="submit" class="btn primary" [disabled]="form.invalid">
         {{ isEditing ? 'Enregistrer' : 'Créer' }}
       </button>
 

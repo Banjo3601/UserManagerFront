@@ -13,6 +13,7 @@ import { User } from '../../../../models/user.model';
 export class UserFormComponent implements OnChanges {
   @Input() user: User | null = null;
   @Input() isEditing = false;
+  @Input() resetTrigger = 0;
 
   @Output() save = new EventEmitter<User>();
   @Output() cancel = new EventEmitter<void>();
@@ -21,6 +22,11 @@ export class UserFormComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['user']) {
+      console.log('User input changed:', changes['user'].currentValue);
+      this.formUser = this.user ? { ...this.user } : this.getEmptyUser();
+    }
+
+    if (changes['resetTrigger']) {
       this.formUser = this.user ? { ...this.user } : this.getEmptyUser();
     }
   }
