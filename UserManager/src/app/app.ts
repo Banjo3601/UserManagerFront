@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { UsersPageComponent } from './features/users/pages/users-page/users-page.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [UsersPageComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.html'
 })
 export class AppComponent {}

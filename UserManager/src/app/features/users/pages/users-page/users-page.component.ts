@@ -7,6 +7,9 @@ import { UserService } from '../../../../core/services/user.services';
 import { UserFormComponent } from '../../components/user-form/user-form.component';
 import { UserListComponent } from '../../components/user-list/user-list.component';
 
+import { Router } from '@angular/router';
+import { AuthService } from '../../../../core/services/auth.service';
+
 @Component({
   selector: 'app-users-page',
   standalone: true,
@@ -28,7 +31,9 @@ export class UsersPageComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -146,4 +151,9 @@ export class UsersPageComponent implements OnInit {
   get totalPages(): number {
     return Math.max(1, Math.ceil(this.totalCount / this.pageSize));
   }
+
+  logout(): void {
+  this.authService.logout();
+  this.router.navigate(['/login']);
+}
 }
