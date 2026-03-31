@@ -43,8 +43,14 @@
     <app-user-list
       [users]="users"
       (edit)="onEdit($event)"
-      (delete)="onDelete($event)">
+      (delete)="onDelete($event)"
+      (viewDetails)="onView($event)">
     </app-user-list>
+
+    <app-user-detail
+      [user]="selectedDetailUser"
+      (close)="closeDetail()">
+    </app-user-detail>
 
     <div class="pagination">
       <button class="btn secondary" (click)="previousPage()" [disabled]="currentPage === 1">

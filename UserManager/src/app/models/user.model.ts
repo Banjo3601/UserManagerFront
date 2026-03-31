@@ -4,4 +4,8 @@ export interface User {
   lastName: string;
   email: string;
   password: string;
+  birthDate?: string;
+  birthCity?: string;
+  description?: string;
+  profileImageUrl?: string;
 }

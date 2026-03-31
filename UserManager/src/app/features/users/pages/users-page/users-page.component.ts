@@ -6,6 +6,7 @@ import { User } from '../../../../models/user.model';
 import { UserService } from '../../../../core/services/user.services';
 import { UserFormComponent } from '../../components/user-form/user-form.component';
 import { UserListComponent } from '../../components/user-list/user-list.component';
+import { UserDetailComponent } from '../../components/user-detail/user-detail.component';
 
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -13,7 +14,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 @Component({
   selector: 'app-users-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, UserFormComponent, UserListComponent],
+  imports: [CommonModule, FormsModule, UserFormComponent, UserListComponent, UserDetailComponent],
   templateUrl: './users-page.component.html',
   styleUrl: './users-page.component.css'
 })
@@ -28,6 +29,7 @@ export class UsersPageComponent implements OnInit {
   totalCount = 0;
   formResetTrigger = 0;
   successMessage = '';
+  selectedDetailUser: User | null = null;
 
   constructor(
     private userService: UserService,
@@ -79,29 +81,27 @@ export class UsersPageComponent implements OnInit {
   }
 
   onSave(user: User): void {
-    if (this.isEditing) {
+  if (this.isEditing) {
+    const confirmed = confirm("Confirmer la modification de cet utilisateur ?");
+    if (!confirmed) return;
 
-      const confirmed = confirm("Confirmer la modification de cet utilisateur ?");
+    this.userService.updateUser(user).subscribe({
+      next: () => {
+        this.successMessage = 'Utilisateur modifié avec succès.';
+        this.cancelEdit();
+        this.formResetTrigger++;
+        this.loadUsers();
+        setTimeout(() => this.successMessage = '', 3000);
+      },
+      error: (err) => console.error(err)
+    });
 
-      if (!confirmed) return;
-
-      this.userService.updateUser(user).subscribe({
-        next: () => {
-          this.successMessage = 'Utilisateur modifié avec succès.';
-          this.cancelEdit();
-          this.formResetTrigger++;
-          this.loadUsers();
-          setTimeout(() => this.successMessage = '', 3000);
-        },
-        error: (err) => console.error(err)
-      });
     return;
   }
-  
-  const confirmed = confirm("Créer cet utilisateur ?");
 
+  const confirmed = confirm("Créer cet utilisateur ?");
   if (!confirmed) return;
-  
+
   this.userService.createUser(user).subscribe({
     next: () => {
       this.successMessage = 'Utilisateur créé avec succès.';
@@ -153,7 +153,16 @@ export class UsersPageComponent implements OnInit {
   }
 
   logout(): void {
-  this.authService.logout();
-  this.router.navigate(['/login']);
-}
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
+  onView(user: User): void {
+    console.log('DETAIL USER', user);
+    this.selectedDetailUser = user;
+  }
+
+  closeDetail(): void {
+  this.selectedDetailUser = null;
+  }
 }

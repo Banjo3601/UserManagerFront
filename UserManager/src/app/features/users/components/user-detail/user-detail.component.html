@@ -1,0 +1,20 @@
+<div class="overlay" *ngIf="user">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Détail utilisateur</h2>
+      <button class="close-btn" (click)="onClose()">✕</button>
+    </div>
+
+    <div class="profile" *ngIf="user?.profileImageUrl">
+      <img [src]="user?.profileImageUrl" alt="Photo de profil" />
+    </div>
+
+    <div class="detail-grid">
+      <p><strong>Nom :</strong> {{ user?.firstName }} {{ user?.lastName }}</p>
+      <p><strong>Email :</strong> {{ user?.email }}</p>
+      <p><strong>Date de naissance :</strong> {{ user?.birthDate || 'Non renseignée' }}</p>
+      <p><strong>Ville de naissance :</strong> {{ user?.birthCity || 'Non renseignée' }}</p>
+      <p><strong>Description :</strong> {{ user?.description || 'Aucune description' }}</p>
+    </div>
+  </div>
+</div>

@@ -14,6 +14,12 @@ export class UserListComponent {
 
   @Output() edit = new EventEmitter<User>();
   @Output() delete = new EventEmitter<number>();
+  @Output() viewDetails = new EventEmitter<User>();
+
+  onView(user: User): void {
+    console.log('CLICK DETAIL CHILD', user);
+    this.viewDetails.emit(user);
+  }
 
   onEdit(user: User): void {
     this.edit.emit(user);
