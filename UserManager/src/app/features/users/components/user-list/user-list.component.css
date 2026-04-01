@@ -67,6 +67,11 @@
   font-size: 0.9rem;
 }
 
+.btn.info {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
 @media (max-width: 900px) {
   .user-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

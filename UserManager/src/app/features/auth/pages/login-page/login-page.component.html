@@ -1,0 +1,52 @@
+<div class="login-page">
+  <div class="login-card">
+    <h1>Connexion</h1>
+    <p>Connecte-toi pour accéder à la gestion des utilisateurs.</p>
+
+    <form #form="ngForm" (ngSubmit)="submit(form)" novalidate>
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          [(ngModel)]="email"
+          name="email"
+          type="email"
+          required
+          email
+          #emailField="ngModel"
+          [class.invalid]="emailField.invalid && (emailField.touched || form.submitted)"
+          placeholder="Ex. john@test.com"
+        />
+        <small class="error" *ngIf="emailField.errors?.['required'] && (emailField.touched || form.submitted)">
+          L’email est obligatoire
+        </small>
+        <small class="error" *ngIf="emailField.errors?.['email'] && (emailField.touched || form.submitted)">
+          Format d’email invalide
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <input
+          id="password"
+          [(ngModel)]="password"
+          name="password"
+          type="password"
+          required
+          #passwordField="ngModel"
+          [class.invalid]="passwordField.invalid && (passwordField.touched || form.submitted)"
+          placeholder="Ton mot de passe"
+        />
+        <small class="error" *ngIf="passwordField.errors?.['required'] && (passwordField.touched || form.submitted)">
+          Le mot de passe est obligatoire
+        </small>
+      </div>
+
+      <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+      <button type="submit" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Connexion...' : 'Se connecter' }}
+      </button>
+    </form>
+  </div>
+</div>

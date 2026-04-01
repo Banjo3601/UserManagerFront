@@ -1,0 +1,67 @@
+<div class="page">
+  <header class="hero">
+    <div>
+      <h1>Gestion des utilisateurs</h1>
+      <p>Interface simple, responsive et connectée à l’API .NET</p>
+    </div>
+
+    <button class="btn secondary" (click)="logout()">Déconnexion</button>
+  </header>
+
+  <div class="success-banner" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
+  <app-user-form
+    [user]="selectedUser"
+    [isEditing]="isEditing"
+    [resetTrigger]="formResetTrigger"
+    (save)="onSave($event)"
+    (cancel)="cancelEdit()">
+  </app-user-form>
+
+  <section class="panel">
+    <div class="toolbar">
+      <div class="search-box">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          name="searchTerm"
+          placeholder="Rechercher par prénom ou nom"
+          autocomplete="off"
+          (input)="onSearch()" />
+      </div>
+
+      <button class="btn secondary" (click)="clearSearch()">Réinitialiser</button>
+    </div>
+
+    <div class="results-header">
+      <h2>Liste des utilisateurs</h2>
+      <span>{{ totalCount }} résultat(s)</span>
+    </div>
+
+    <app-user-list
+      [users]="users"
+      (edit)="onEdit($event)"
+      (delete)="onDelete($event)"
+      (viewDetails)="onView($event)">
+    </app-user-list>
+
+    <app-user-detail
+      [user]="selectedDetailUser"
+      (close)="closeDetail()">
+    </app-user-detail>
+
+    <div class="pagination">
+      <button class="btn secondary" (click)="previousPage()" [disabled]="currentPage === 1">
+        Précédent
+      </button>
+
+      <span>Page {{ currentPage }} / {{ totalPages }}</span>
+
+      <button class="btn secondary" (click)="nextPage()" [disabled]="currentPage === totalPages">
+        Suivant
+      </button>
+    </div>
+  </section>
+</div>
